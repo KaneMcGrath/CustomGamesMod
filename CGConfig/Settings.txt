@@ -1,0 +1,22 @@
+Custom Games Mod Preferences
+
+Contains all settings for only the CGMods additions
+____________________________________________________
+#CGCustomLevelManager
+{
+	linesPerRPC;99
+	RPCDelay;1
+}
+#CGSoccer
+{
+	ballRadius;14
+	ballMaxSpeed;2000
+	ballForceMultiplier;1.5
+	ballFriction;0
+	ballBounciness;1
+	goalExplosionForce;80
+	titanHeight;-200
+	bombHeight;50
+	doJoinCard;True
+	disallowHooks;False
+}
