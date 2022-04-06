@@ -15,7 +15,7 @@ But it should still be compatible with the 11/22/2021 update.
 Ill try to update this mod to the latest version of the RC mod later on.
 This mod is still in development, and has many bugs.
 
-The Custom Games Mod currently has 2 major features
+The Custom Games Mod currently has two major features
 
 ### Custom Level Manager
 A new level manager that allows loading custom levels on any map
