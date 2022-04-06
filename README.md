@@ -71,7 +71,7 @@ ______Game Properties______
 
 [ Reset Ball ]				Moves the ball back to the center.  Useful if the ball gets stuck.
 [ Manage Teams ]			Brings up the team manager window.  Used to manually assign teams.
-[x] Send Welcome Message		Sends a message to players when they join the game.  You can edit the message in CGCongfig\JoinMessage.txt
+[x] Send Welcome Message		Sends a message to players when they join the game.  You can edit the message in CGConfig\JoinMessage.txt
 Goal Explosion Force:			How much force to apply to the player when the ball hits the goal.
 Titan Height:				Controls the height of the titan used for the minimap.  Keep him below the map.
 Bomb Height:				Controls the height of the Bomb used to indicate the balls position.
