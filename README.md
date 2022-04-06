@@ -81,6 +81,14 @@ Bomb Height:				Controls the height of the Bomb used to indicate the balls posit
 [ Apply ]				Hit this button to apply any changes.
 ```
 All settings for this mod are stored in CGConfig\Settings.txt and are saved and loaded with the Save and Load Buttons in the pause menu
+## Custom Maps
+The provided Map SoccerField.txt is pretty good, but you are welcome to make your own map.
+To be able to work with this mod you need to include regions with the same name
+ - "GoalBlue"			Goal on the cyan side of the map.
+ - "GoalRed"			Goal on the Magenta side of the map.
+ - "BallSpawn"			Where the ball spawns and is reset to.
+ - "CyanGas"			When a black flare is fired while a player is still, they will be teleported here.
+ - "MagentaGas"		When a black flare is fired while a player is still, they will be teleported here.
 
 
 # Source Code
