@@ -1,5 +1,8 @@
 
 # Custom Games Mod 2
+
+[Download Latest Version](https://github.com/KaneMcGrath/CustomGamesMod/releases/tag/v1.0)
+
 A mod for the Attack On Titan Tribute Game.  
 Created by Avisite.
 
