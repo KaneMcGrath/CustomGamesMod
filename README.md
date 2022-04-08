@@ -22,6 +22,7 @@ add objects and structures to The City, The Forest, or even Outside the Walls.
 Maps are saved as files, and you can select from a list of saved maps when starting a game.
 
 ### Soccer
+
 A custom gamemode that implements a working soccer game.  
 Inspired by Rocket League, two teams compete to score points by hitting the ball into the enemy teams goal.
 Includes options to disable hooks and to change the physics properties of the ball.
@@ -39,6 +40,9 @@ Hit "Restart and Apply" to load the map.
 Some small improvements to the level editor have been made, most importantly the ability to load any map you want.
 As well as being able to save maps to a file.  Maps are stored in the "levels" folder.
 # Soccer
+
+***Soccer is counterintuitively not compatible with the CG Level Manager, make sure to load the map the normal way***
+
 This custom gamemode adds a fully functioning soccer game.  
 Inspired by Rocket League, two teams compete to score points by hitting the ball into the enemy teams goal.
 
