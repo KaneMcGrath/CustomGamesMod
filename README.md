@@ -20,8 +20,8 @@ This mod is still in development, and has many bugs.
 The Custom Games Mod currently has two major features
 
 ### Custom Level Manager
-A new level manager that allows loading custom levels on any map
-add objects and structures to The City, The Forest, or even Outside the Walls.
+A new level manager that allows loading custom levels on any map.  
+Add objects and structures to The City, The Forest, or even Outside the Walls.
 Maps are saved as files, and you can select from a list of saved maps when starting a game.
 
 ### Soccer
