@@ -6,9 +6,12 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 
 
-
+/// <summary>
+/// Custom Games Mod v1.2 By: Kane McGrath
+/// </summary>
 namespace CustomGamesMod
 {
+    
     public class CGCustomLevelManager
     {
         public CGCustomLevelManager()
@@ -194,6 +197,7 @@ namespace CustomGamesMod
 
         public static void log(string s)
         {
+            if (logLevelManagerProgress)
             CGLog.log(s);
         }
 
@@ -473,6 +477,8 @@ namespace CustomGamesMod
         private bool ignoreLoadCached;
 
         private static List<GameObject> previewObjects = new List<GameObject>();
+
+        public static bool logLevelManagerProgress = false;
     }
 
     public class CGLevelEditor
@@ -968,7 +974,7 @@ namespace CustomGamesMod
                 {
                     Rect position = new Rect((float)Screen.width - width, (float)(i * 25) + 50f, width, 25f);
                     GUI.DrawTexture(position, LogBackground);
-                    GUI.Label(position, fullLog[fullLog.Count - num + i].message);
+                    GUI.Label(position, fullLog[fullLog.Count - num + i].message, CGSettingsMenu.levelPathStyle);
                 }
             }
             
@@ -1014,6 +1020,8 @@ namespace CustomGamesMod
             TrackedBackground = FlatUI.FlatColorTexture(new Color(0.5f, 0.0f, 0.0f, 0.6f));
         }
 
+        
+
         public static List<logMessage> fullLog = new List<logMessage>();
 
         public static float logTimer = 0f;
@@ -1032,6 +1040,8 @@ namespace CustomGamesMod
         public static float trackedWidth = 150f;
 
         public static float width = 600f;
+
+        
     }
 
     public static class CGPrefs
@@ -1200,54 +1210,17 @@ namespace CustomGamesMod
             }
             if (useLevelSelector)
             {
-                updateLevels();
-                if (levels.Length != 0)
-                {
-                    int num6 = levelSelectorPage * num5;
-                    int num7 = Math.Min(num6 + num5 - 1, levels.Length - 1);
-                    Math.Min(num6 + num5 - 1, levels.Length - 1);
-                    for (int j = num6; j <= num7; j++)
-                    {
-                        if (GUI.Button(array[j - num5 * levelSelectorPage], levels[j]))
-                        {
-                            string[] array2 = File.ReadAllLines(levels[j]);
-                            string str = "";
-                            List<string> list = new List<string>();
-                            foreach (string text in array2)
-                            {
-                                str += text;
-                                str += Environment.NewLine;
-                                list.Add(text.TrimEnd(new char[]
-                                {
-                                    ';'
-                                }));
-                            }
-                            levelTextArea = str;
-                            selectedLevelPath = levels[j];
-                            selectedLevel = list;
-                            useLevelSelector = false;
-                        }
-                    }
-                    if (levels.Length > num5)
-                    {
-                        if (levelSelectorPage > 0 && GUI.Button(new Rect(num + 150f, num2 + 505f, 50f, 30f), "<"))
-                        {
-                            levelSelectorPage--;
-                        }
-                        float num8 = Mathf.Ceil((float)levels.Length / (float)num5);
-                        if ((float)levelSelectorPage < num8 - 1f && GUI.Button(new Rect(num + 200f, num2 + 505f, 50f, 30f), ">"))
-                        {
-                            levelSelectorPage++;
-                            return;
-                        }
-                    }
-                }
+                ShowLevelSelector(true);
             }
             else
             {
-                CGCustomLevelManager.useCustomLevel = GUI.Toggle(array[0], CGCustomLevelManager.useCustomLevel, "Enable CG Level Manager");
-                GUI.Label(FlatUI.split(array[1], 0, 2), "Level to use");
-                if (GUI.Button(FlatUI.split(array[1], 1, 2), "Select"))
+                if (FengGameManagerMKII.level.StartsWith("Custom"))
+                {
+                    GUI.Label(array[0], "The CG Level Manager is not recommended on this map.", CGSettingsMenu.selectedLevelPathStyle);
+                }
+                CGCustomLevelManager.useCustomLevel = GUI.Toggle(FlatUI.split(array[1], 0, 4, 2), CGCustomLevelManager.useCustomLevel, "Enable CG Level Manager");
+                GUI.Label(FlatUI.split(array[1], 2, 4), "Level to use");
+                if (GUI.Button(FlatUI.split(array[1], 3, 4), "Select"))
                 {
                     useLevelSelector = true;
                 }
@@ -1281,6 +1254,72 @@ namespace CustomGamesMod
                     CGPrefs.Set("CGCustomLevelManager", "RPCDelay", RPCDelayTextBox);
                     CGCustomLevelManager.sendsPerInterval = Convert.ToInt32(linesPerRPCTextBox);
                     CGCustomLevelManager.sendWaitInterval = Convert.ToSingle(RPCDelayTextBox);
+                }
+                CGCustomLevelManager.logLevelManagerProgress = GUI.Toggle(FlatUI.split(array[13], 1,2), CGCustomLevelManager.logLevelManagerProgress, " Log Level Manager Progress");
+            }
+        }
+
+        public static void ShowLevelSelector(bool CG)
+        {
+            float num = (float)Screen.width / 2f - 350f;
+            float num2 = (float)Screen.height / 2f - 275f;
+            float num3 = num + 50f;
+            float num4 = num2 + 85f;
+            int num5 = 14;
+            updateLevels();
+            if (levels.Length != 0)
+            {
+                Rect[] array = new Rect[num5];
+                for (int i = 0; i < num5; i++)
+                {
+                    array[i] = new Rect(num3 + 5f, num4 + (float)i * 30f, 550f, 30f);
+                }
+                int num6 = levelSelectorPage * num5;
+                int num7 = Math.Min(num6 + num5 - 1, levels.Length - 1);
+                Math.Min(num6 + num5 - 1, levels.Length - 1);
+                for (int j = num6; j <= num7; j++)
+                {
+                    if (GUI.Button(array[j - num5 * levelSelectorPage], levels[j]))
+                    {
+                        if (CG)
+                        {
+                            string[] array2 = File.ReadAllLines(levels[j]);
+                            string str = "";
+                            List<string> list = new List<string>();
+                            foreach (string text in array2)
+                            {
+                                str += text;
+                                str += Environment.NewLine;
+                                list.Add(text.TrimEnd(new char[]
+                                {
+                                    ';'
+                                }));
+                            }
+                            levelTextArea = str;
+                            selectedLevelPath = levels[j];
+                            selectedLevel = list;
+                            
+                        }
+                        else
+                        {
+                            FengGameManagerMKII.currentScript = File.ReadAllText(levels[j]);
+                        }
+                        useLevelSelector = false;
+
+                    }
+                }
+                if (levels.Length > num5)
+                {
+                    if (levelSelectorPage > 0 && GUI.Button(new Rect(num + 150f, num2 + 505f, 50f, 30f), "<"))
+                    {
+                        levelSelectorPage--;
+                    }
+                    float num8 = Mathf.Ceil((float)levels.Length / (float)num5);
+                    if ((float)levelSelectorPage < num8 - 1f && GUI.Button(new Rect(num + 200f, num2 + 505f, 50f, 30f), ">"))
+                    {
+                        levelSelectorPage++;
+                        return;
+                    }
                 }
             }
         }
@@ -1500,7 +1539,7 @@ namespace CustomGamesMod
                         return;
                     }
                 }
-                GUI.Label(new Rect(array[9].x, array[9].y, 350f, 90f), checkRegionsResponse, selectedLevelPathStyle);
+                GUI.Label(new Rect(array[9].x - 50f, array[9].y + 60f, 350f, 90f), checkRegionsResponse, selectedLevelPathStyle);
             }
             else
             {
@@ -1550,8 +1589,6 @@ namespace CustomGamesMod
                     CGSoccer.ResetBall();
                 }
             }
-            
-
 
             GUI.Label(FlatUI.split(array[2], 0, 2), "Ball Properties", levelPathStyle);
             GUI.Label(FlatUI.split(array[3], 0, 8, 2), "Radius: ");
@@ -1581,7 +1618,6 @@ namespace CustomGamesMod
             {
                 ApplySettings();
             }
-            
         }
         
         public static void ApplySettings()
@@ -1601,6 +1637,8 @@ namespace CustomGamesMod
             CGSoccer.PhysicsSettings[4] = friction;
             if (CGSoccer.ball != null) CGSoccer.SetBallRigidbodySettings();
             CGSoccer.disallowHooks = disallowHooksCheckBox;
+            CGCustomLevelManager.sendsPerInterval = Convert.ToInt32(linesPerRPCTextBox);
+            CGCustomLevelManager.sendWaitInterval = Convert.ToSingle(RPCDelayTextBox);
         }
 
         public static void updateLevels()
@@ -1658,6 +1696,7 @@ namespace CustomGamesMod
         {
             CGPrefs.Set("CGCustomLevelManager", "linesPerRPC", linesPerRPCTextBox);
             CGPrefs.Set("CGCustomLevelManager", "RPCDelay", RPCDelayTextBox);
+            CGPrefs.Set("CGCustomLevelManager", "logLevelManagerProgress", CGCustomLevelManager.logLevelManagerProgress.ToString());
             CGPrefs.Set("CGSoccer", "ballRadius", ballRadiusTextBox);
             CGPrefs.Set("CGSoccer", "ballMaxSpeed", ballMaxSpeedTextBox);
             CGPrefs.Set("CGSoccer", "ballForceMultiplier", ballForceMultiplierTextBox);
@@ -1674,6 +1713,10 @@ namespace CustomGamesMod
         {
             linesPerRPCTextBox = CGPrefs.Get("CGCustomLevelManager", "linesPerRPC");
             RPCDelayTextBox = CGPrefs.Get("CGCustomLevelManager", "RPCDelay");
+            if (!bool.TryParse(CGPrefs.Get("CGCustomLevelManager", "logLevelManagerProgress"), out CGCustomLevelManager.logLevelManagerProgress))
+            {
+                CGCustomLevelManager.logLevelManagerProgress = false;
+            }
             ballRadiusTextBox = CGPrefs.Get("CGSoccer", "ballRadius");
             ballMaxSpeedTextBox = CGPrefs.Get("CGSoccer", "ballMaxSpeed");
             ballForceMultiplierTextBox = CGPrefs.Get("CGSoccer", "ballForceMultiplier");
@@ -1692,12 +1735,19 @@ namespace CustomGamesMod
             }
             if (File.Exists("CGConfig\\JoinMessage.txt"))
             {
-                CGSoccer.joinMessage = File.ReadAllText("CGConfig\\JoinMessage.txt");
+                string[] lines = File.ReadAllLines("CGConfig\\JoinMessage.txt");
+                string result = "";
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    result += lines[i] + Environment.NewLine;
+                }
+                CGSoccer.joinMessage = result;
             }
             ApplySettings();
 
         }
 
+        private static bool logLevelManagerCheckBox = false;
         private static bool disallowHooksCheckBox = false;
         private static string checkRegionsResponse = "";
         private static float recalculatePlayerListsTimer = 0f;
@@ -1709,7 +1759,7 @@ namespace CustomGamesMod
         private static int noTeamPlayerPage = 0;
         public static bool ShowLevelManager = false;
         public static string levelTextArea = "";
-        private static bool useLevelSelector = false;
+        public static bool useLevelSelector = false;
         private static float levelUpdateTimer = 0f;
         public static string[] levels = new string[0];
         private static int levelSelectorPage = 0;
@@ -2073,7 +2123,6 @@ namespace CustomGamesMod
             bombTrail.GetComponent<Bomb>().CGBomb = true;
             ballMapIndicatorTitan = PhotonNetwork.Instantiate("TITAN_VER3.1", new Vector3(location.x, titanHeight, location.z), Quaternion.identity, 0);
             ballMapIndicatorTitan.GetComponent<TITAN>().isStatic = true;
-            
         }
 
         public static void GoalExplosion(Vector3 vector3)
@@ -2096,46 +2145,46 @@ namespace CustomGamesMod
 
         public static void OnInstantiate(PhotonPlayer photonPlayer, string key, GameObject instantiated)
         {
-            if (PhotonNetwork.isMasterClient && doGameMode)
+            if (PhotonNetwork.isMasterClient)
             {
-                if (key == "FX/flareBullet3" && CGTools.GetHero(photonPlayer).rigidbody.velocity.magnitude < 1f)
+                if (doGameMode)
                 {
-                    HERO hero2 = CGTools.GetHero(photonPlayer);
-                    Vector3 vector2 = new Vector3(0f, 20f, 0f);
-                    if (RCextensions.returnIntFromObject(hero2.photonView.owner.customProperties[PhotonPlayerProperty.RCteam]) == 1)
+                    if (key == "FX/flareBullet3" && CGTools.GetHero(photonPlayer).rigidbody.velocity.magnitude < 1f)
                     {
-                        int num = UnityEngine.Random.Range(1, 3);
-                        vector2 = ((RCRegion)FengGameManagerMKII.RCRegions["CyanGas" + num.ToString()]).location;
-                        hero2.photonView.RPC("moveToRPC", photonPlayer, new object[]
+                        HERO hero2 = CGTools.GetHero(photonPlayer);
+                        Vector3 vector2 = new Vector3(0f, 20f, 0f);
+                        if (RCextensions.returnIntFromObject(hero2.photonView.owner.customProperties[PhotonPlayerProperty.RCteam]) == 1)
                         {
+                            int num = UnityEngine.Random.Range(1, 3);
+                            vector2 = ((RCRegion)FengGameManagerMKII.RCRegions["CyanGas" + num.ToString()]).location;
+                            hero2.photonView.RPC("moveToRPC", photonPlayer, new object[]
+                            {
                             vector2.x,
                             vector2.y,
                             vector2.z
-                        });
-                        return;
-                    }
-                    if (RCextensions.returnIntFromObject(photonPlayer.customProperties[PhotonPlayerProperty.RCteam]) == 2)
-                    {
-                        int num2 = UnityEngine.Random.Range(1, 3);
-                        vector2 = (vector2 = ((RCRegion)FengGameManagerMKII.RCRegions["MagentaGas" + num2.ToString()]).location);
-                        hero2.photonView.RPC("moveToRPC", photonPlayer, new object[]
+                            });
+                            return;
+                        }
+                        if (RCextensions.returnIntFromObject(photonPlayer.customProperties[PhotonPlayerProperty.RCteam]) == 2)
                         {
+                            int num2 = UnityEngine.Random.Range(1, 3);
+                            vector2 = (vector2 = ((RCRegion)FengGameManagerMKII.RCRegions["MagentaGas" + num2.ToString()]).location);
+                            hero2.photonView.RPC("moveToRPC", photonPlayer, new object[]
+                            {
                             vector2.x,
                             vector2.y,
                             vector2.z
-                        });
+                            });
+                        }
                     }
-                    
                 }
                 if (key == "hook" && disallowHooks)
                 {
-
                     CGTools.GetHero(photonPlayer).photonView.RPC("netDie2", photonPlayer, new object[]
                     {
                         -1,
                         "Hooks are currently disabled"
                     });
-
                 }
             }
         }
@@ -2479,6 +2528,10 @@ namespace CustomGamesMod
         public static Texture2D Oarnge;
     }
 
+
+    /// <summary>
+    /// Contains Most of the entry points from the FengGameManagerMKII to keep most of the mods references easy.
+    /// </summary>
     public class KaneGameManager
     {
         public static void setBackground()
@@ -2510,6 +2563,7 @@ namespace CustomGamesMod
             CGCustomLevelManager.Update();
             CGSoccer.update();
             CGLevelEditor.Update();
+            devKeys();
         }
 
         public static void FixedUpdate()
@@ -2541,6 +2595,27 @@ namespace CustomGamesMod
             CGCustomLevelManager.OnPhotonPlayerConnected(photonPlayer);
             CGSoccer.OnPlayerJoined(photonPlayer);
         }
+
+        public static void devKeys()
+        {
+            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.KeypadMinus))
+            {
+                useDevKeys = !useDevKeys;
+                CGLog.log("Dev keys: " + useDevKeys);
+            }
+            if (useDevKeys)
+            {
+                if (Input.GetKeyDown(KeyCode.KeypadMultiply))
+                {
+                    CGSoccer.OnPlayerJoined(PhotonNetwork.player);
+                }
+                
+            }
+        }
+
+        public static readonly string version = "v1.2";
+
+        public static bool useDevKeys = false;
     }
 
     public struct logMessage
