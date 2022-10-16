@@ -6,6 +6,10 @@ Created by Avisite.
 
 [Download Latest Version](https://github.com/KaneMcGrath/CustomGamesMod/releases/download/v1.1/CustomGamesMod2.zip)
 
+Follow updates and future mod releases on the Custom Games Mod Discord server
+
+https://discord.gg/BgaBuhT
+
 # Overview
 The Custom Games Mod is a mod for the game Attack on Titan Tribute Game that focuses on "Server Side" Improvements to the game.  
 This means using the games functions in ways that were not intended, in order to create new experiences for anybody playing the game.  
